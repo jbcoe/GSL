@@ -16,6 +16,9 @@
 
 #pragma once
 
+#ifndef GSL_STRING_VIEW_H
+#define GSL_STRING_VIEW_H
+
 #include "array_view.h"
 #include <cstring>
 
@@ -134,7 +137,7 @@ basic_string_view<typename std::remove_pointer<typename Cont::pointer>::type, dy
 // to_string() allow (explicit) conversions from string_view to string
 //
 template<class CharT, size_t Extent>
-std::basic_string<typename std::remove_const<CharT>::type> to_string(const basic_string_view<CharT, Extent>& view)
+std::basic_string<typename std::remove_const<CharT>::type> to_string(basic_string_view<CharT, Extent> view)
 {
     return{ view.data(), view.length() };
 }
@@ -176,3 +179,5 @@ using zstring_builder = basic_zstring_builder<char, Max>;
 template <size_t Max = dynamic_range>
 using wzstring_builder = basic_zstring_builder<wchar_t, Max>;
 }
+
+#endif // GSL_STRING_VIEW_H
