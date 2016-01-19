@@ -1669,7 +1669,7 @@ constexpr auto as_span(span<byte, Dimensions...> s) noexcept -> span<
              ByteSpan::bounds_type::static_size % static_cast<std::size_t>(sizeof(U)) == 0),
         "Target type must be a trivial type and its size must match the byte array size");
 
-    Expects((s.bytes() % sizeof(U)) == 0);
+    Expects((s.size_bytes() % sizeof(U)) == 0);
     return {reinterpret_cast<U*>(s.data()),
             s.size_bytes() / narrow_cast<std::ptrdiff_t>(sizeof(U))};
 }
@@ -1818,7 +1818,7 @@ public:
         auto d = narrow_cast<size_type>(sizeof(OtherValueType) / sizeof(value_type));
 
         size_type size = this->bounds().total_size() / d;
-        return {(OtherValueType*) this->data(), size,
+        return {const_cast<OtherValueType*>(reinterpret_cast<const OtherValueType*>(this->data())), size,
                 bounds_type{resize_extent(this->bounds().index_bounds(), d),
                             resize_stride(this->bounds().strides(), d)}};
     }
